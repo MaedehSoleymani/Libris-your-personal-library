@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد کاربری</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>✅ سلام! با موفقیت وارد شدید</h1>
+            <p class="subtitle">اگر این صفحه را می‌بینید، یعنی ورود و نمایش تمپلیت به درستی کار می‌کند.</p>
+        </header>
+
+        <section class="api-section">
+            <h2>اتصال به API</h2>
+            {% if posts %}
+                <p class="info-text">ممکن است این شیرینی‌ها را دوست داشته باشید:</p>
+                <ul class="post-list">
+                {% for post in posts %}
+                    <li class="post-item">{{ post.title }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty-message">هیچ پستی دریافت نشد. لطفاً بعداً دوباره تلاش کنید.</p>
+            {% endif %}
+        </section>
+
+        <footer class="footer">
+            <a href="{{ url_for('login') }}" class="back-link">بازگشت به صفحه ورود</a>
+        </footer>
+    </div>
+</body>
+</html>

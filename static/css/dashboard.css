@@ -1,0 +1,100 @@
+/* static/dashboard.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Tahoma", "Arial", sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+    color: #333;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+}
+
+.header h1 {
+    color: #2e7d32;
+    font-size: 28px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.subtitle {
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.api-section h2 {
+    font-size: 22px;
+    color: #1a237e;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.info-text {
+    color: #555;
+    margin-bottom: 16px;
+    font-weight: bold;
+}
+
+.post-list {
+    list-style: none;
+    padding: 0;
+}
+
+.post-item {
+    background: #f8f9fa;
+    padding: 14px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border-right: 4px solid #4caf50;
+    font-size: 17px;
+    color: #222;
+    transition: background 0.2s;
+}
+
+.post-item:hover {
+    background: #e8f5e9;
+}
+
+.empty-message {
+    color: #d32f2f;
+    font-style: italic;
+    padding: 16px;
+    background: #ffebee;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.footer {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.back-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #1976d2;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.back-link:hover {
+    background: #1565c0;
+}

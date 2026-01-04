@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>ثبت‌نام</title>
+    <style>
+        body { font-family: Arial; direction: rtl; padding: 20px; }
+        .alert { color: red; margin: 10px 0; }
+        .success { color: green; }
+        input { margin: 5px 0; padding: 8px; width: 200px; }
+    </style>
+</head>
+<body>
+    <h2>فرم ثبت‌نام</h2>
+    <form method="POST">
+        <div>
+            <label>نام کاربری:</label><br>
+            <input type="text" name="username" required>
+        </div>
+        <div>
+            <label>رمز عبور:</label><br>
+            <input type="password" name="password" required>
+        </div>
+        <br>
+        <input type="submit" value="ثبت‌نام">
+    </form>
+    <span class="caption"><a href= {{url_for ('password_generator')}}> رمز عبور قوی تولید کن</a></span>
+
+</body>
+</html>
