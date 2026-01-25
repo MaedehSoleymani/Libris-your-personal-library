@@ -1,6 +1,0 @@
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username VARCHAR (32) TEXT NOT NULL UNIQUE,
-    password VARCHAR (62) TEXT NOT NULL
-);
-INSERT INTO users (username, password) VALUES (?,?)

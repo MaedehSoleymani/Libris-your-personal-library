@@ -1,100 +1,103 @@
-/* static/dashboard.css */
+/* File: static/css/dashboard.css (به‌روزرسانی شده) */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@200;300;400;500;600;700&display=swap");
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
 }
 
 body {
-    font-family: "Tahoma", "Arial", sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
-    color: #333;
-    padding: 20px;
-    line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  color: #fff;
+  direction: rtl;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    padding: 30px;
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/static/images/login_bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
 }
 
-.header h1 {
-    color: #2e7d32;
-    font-size: 28px;
-    margin-bottom: 12px;
-    text-align: center;
+.dashboard-wrapper {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 40px 50px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  width: 90%;
+  max-width: 900px;
 }
 
-.subtitle {
-    color: #666;
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 16px;
+.dashboard-wrapper h1 {
+  margin-bottom: 30px;
+  font-size: 2rem;
 }
 
-.api-section h2 {
-    font-size: 22px;
-    color: #1a237e;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e0e0e0;
+.books-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
-.info-text {
-    color: #555;
-    margin-bottom: 16px;
-    font-weight: bold;
+.books-table th, .books-table td {
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 10px;
+  text-align: center;
 }
 
-.post-list {
-    list-style: none;
-    padding: 0;
+.books-table th {
+  background: rgba(255,255,255,0.2);
 }
 
-.post-item {
-    background: #f8f9fa;
-    padding: 14px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border-right: 4px solid #4caf50;
-    font-size: 17px;
-    color: #222;
-    transition: background 0.2s;
+.action-btn {
+  padding: 5px 10px;
+  border-radius: 3px;
+  text-decoration: none;
+  font-size: 14px;
+  margin: 0 2px;
+  color: #fff;
 }
 
-.post-item:hover {
-    background: #e8f5e9;
+.action-btn.edit {
+  background: #4caf50;
 }
 
-.empty-message {
-    color: #d32f2f;
-    font-style: italic;
-    padding: 16px;
-    background: #ffebee;
-    border-radius: 8px;
-    text-align: center;
+.action-btn.edit:hover {
+  background: rgba(76, 175, 80,0.6);
 }
 
-.footer {
-    margin-top: 30px;
-    text-align: center;
+.action-btn.delete {
+  background: #f44336;
 }
 
-.back-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #1976d2;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: background 0.3s;
+.action-btn.delete:hover {
+  background: rgba(244, 67, 54,0.6);
 }
 
-.back-link:hover {
-    background: #1565c0;
+.dashboard-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
+
+.btn {
+  background: #fff;
+  color: #000;
+  text-decoration
