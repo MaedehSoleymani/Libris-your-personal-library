@@ -9,19 +9,34 @@ app.secret_key = 'awesrdgtfhAWSEDTRYUIxCVGBHJ5247896532'
 
 app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///sqlite.db"
 db= SQLAlchemy(app)
+
 class User(db.Model):
+    __tablename__ = "users"
     id= db.Column (db.Integer, primary_key= True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
     def __repr__ (self):
-        return self.username
+        return self.email
 
 with app.app_context():
     db.create_all()
 
-USERNAME = "admin"
+email = "admin"
 PASSWORD = "1234"
+
+@app.route("/reset_db")
+def reset_db():
+    try:
+        with app.app_context():
+            db.drop_all()
+            db.create_all()
+            admin = User(email="admin", password="1234")
+            db.session.add(admin)
+            db.session.commit()
+        return "Database has been reset successfully. Admin user created."
+    except Exception as e:
+        return f"Error resetting database: {e}"
 
 #-----------------------------------------------------
 #non route functions
@@ -29,7 +44,7 @@ PASSWORD = "1234"
 def login_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if "username" not in session:
+        if "email" not in session:
             return redirect(url_for("login"))
         return f(*args, **kwargs)
     return wrapper
@@ -38,34 +53,46 @@ def login_required(f):
 
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return render_template('main.html')
 
 @app.route('/admin')
 def admin():
-    with sqlite3.connect ("db.sqlite") as con:
-        c= con.cursor()
-        c.execute("SELECT * FROM users")
-        users= c.fetchall()
-        return f"<h2>the users are:</h2><br>{users}"
+    users=User.query.all()
+    return render_template("admin.html",users=users)
+    
+@app.route('/edit_users')
+def edit_users():
+    user= User.query.filter_by(email="").first()
+    user.email=""
+    db.session.commit()
+    return redirect(url_for('admin'))
+
+@app.route('/delete_user')
+def delete_user():
+    user=User.query.filter_by(email="").first()
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('admin'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     try:
         if request.method == 'POST':
-            username = request.form['username']
-            password = request.form['password']
-            with sqlite3.connect ("db.sqlite") as con:
-                c= con.cursor()
-                c.execute("SELECT * FROM users WHERE username=? AND password=?", (username,password))
-                user= c.fetchone()
-                if user:
-                    flash (f"welcome {user[1]}","success")
-                    session["username"]=username
-                    return redirect(url_for("dashboard"))
-                else:
-                    return ("این نام کاربری وجود ندارد. آیا تمایل دارید اکانت بسازید؟")
-    except:
-        return "error"
+            print("Form keys:", list(request.form.keys()))
+            print("Form data:", request.form)
+            email = request.form.get('email')
+            password = request.form.get('password')
+            print (email,password)
+            user= User.query.filter_by(email=email,password=password).first()
+            print (user)
+            if user:
+                session['email'] = email
+                flash (f"welcome {user}","success")
+                return redirect(url_for("dashboard"))
+            else:
+                return ("این نام کاربری وجود ندارد. آیا تمایل دارید اکانت بسازید؟")
+    except Exception as e:
+        return f"Error: {e}"
     return render_template('login.html')
 
 @app.route('/logout')
@@ -77,10 +104,14 @@ def logout():
 @app.route ("/register", methods=["POST","GET"])
 def register():
     if request.method == "POST":
-        username= request.form['username']
+        email= request.form['email']
         password= request.form['password']
-        user= User (username=username, password=password)
-        db.session.add(user)
+        print (email,password)
+        print("Form keys:", list(request.form.keys()))
+        print("Form data:", request.form)
+        new_user= User (email=email, password=password)
+        print (new_user)
+        db.session.add(new_user)
         db.session.commit()
         return redirect (url_for("login"))
     return render_template("register.html")
@@ -101,7 +132,6 @@ def password_generator():
     text= "123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM[]\';,./@#$%"
     password= ''.join(random.sample(text,12))
     return jsonify({"password": password})
-    #return render_template ("password_generator.html", password=password)
 
 @app.route ("/forgot_password")
 def forgot_password():
@@ -151,5 +181,4 @@ def search_book():
     Library.search_book()
 
 if __name__ == '__main__':
-    create_db()
     app.run(debug=True)

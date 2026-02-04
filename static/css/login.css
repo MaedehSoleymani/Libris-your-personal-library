@@ -16,7 +16,7 @@ body {
   align-items: center;
   justify-content: center;
   font-family: "Open Sans", sans-serif;
-  background: #000; /* رنگ پشتیبان اگر عکس لود نشد */
+  background: #000;
 }
 
 body::before {
@@ -38,14 +38,12 @@ body::before {
   border-radius: 12px;
   padding: 30px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.15); /* شفاف ولی قابل‌خواندن */
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.35);
-  .wrapper {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
-
 
 form {
   display: flex;
@@ -67,13 +65,13 @@ h2 {
 .input-field label {
   position: absolute;
   top: 50%;
-  right: 0; /* ← تغییر از left به right */
+  right: 0;
   transform: translateY(-50%);
   color: #fff;
   font-size: 16px;
   pointer-events: none;
   transition: 0.15s ease;
-  text-align: right; /* ← مطمئن می‌شیم متن راست‌چین باشه */
+  text-align: right;
 }
 
 .input-field input {
@@ -84,7 +82,7 @@ h2 {
   outline: none;
   font-size: 16px;
   color: #fff;
-  text-align: right; /* ← ورودی‌ها هم راست‌چین */
+  text-align: right;
 }
 
 .input-field input:focus ~ label,
@@ -92,7 +90,7 @@ h2 {
   font-size: 0.8rem;
   top: 10px;
   transform: translateY(-120%);
-  right: 0; /* ← موقعیت بالا رفتن برچسب هم از سمت راست باشد */
+  right: 0;
 }
 
 .forget {
@@ -110,12 +108,10 @@ h2 {
 .forget label {
   display: flex;
   align-items: center;
-  /* بدون flex-direction: row-reverse — چون می‌خوایم چک‌باکس سمت راست باشه */
 }
 
 .forget label p {
-  margin-left: 8px; /* حالا متن سمت چپ چک‌باکس است (چون کل صفحه RTL است) */
-  margin-right: 0;
+  margin-left: 8px;
 }
 
 .wrapper a {
@@ -138,7 +134,7 @@ button {
   font-size: 16px;
   border: 2px solid transparent;
   transition: 0.3s ease;
-  width: 100%; /* ← اختیاری: برای هماهنگی بهتر در RTL */
+  width: 100%;
 }
 
 button:hover {
