@@ -1,77 +1,100 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>ثبت‌نام</title>
-    <style>
-        body { 
-            font-family: Arial; 
-            direction: rtl; 
-            padding: 20px; 
-        }
-        .alert { color: red; margin: 10px 0; }
-        .success { color: green; }
-        input { 
-            margin: 5px 0; 
-            padding: 8px; 
-            width: 200px; 
-        }
-        #generatePassword {
-            margin-top: 10px;
-            padding: 6px 12px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #generatePassword:hover {
-            background: #0056b3;
-        }
-        #generatedPassword {
-            margin-top: 10px;
-            padding: 8px;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            min-height: 20px;
-        }
-    </style>
-    <!-- jQuery را از CDN وارد می‌کنیم -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ثبت‌نام | لیبریس</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
 </head>
 <body>
-    <h2>فرم ثبت‌نام</h2>
-    <form action="{{ url_for('register') }}" method="POST">
-        <div>
-            <label> email:</label><br>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo">📚 Libris</div>
+      <nav class="nav-links">
+        <a href="{{ url_for('home') }}">خانه</a>
+        <a href="{{ url_for('home') }}#features">امکانات</a>
+        <a href="{{ url_for('home') }}#about">درباره ما</a>
+        <a href="/contact_us">تماس با ما</a>
+        <a href="/tos">قوانین و مقررات</a>
+      </nav>
+      <div class="auth-buttons">
+        <a href="{{ url_for('login') }}" class="btn btn-outline">ورود</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Register Section -->
+  <section class="register-section section">
+    <div class="container">
+      <div class="wrapper">
+        <form action="{{ url_for('register') }}" method="POST">
+          <h2>ثبت‌نام</h2>
+          
+          <div class="input-field">
             <input type="email" name="email" required>
-        </div>
-        <div>
-            <label>رمز عبور:</label><br>
+            <label>ایمیل خود را وارد کنید</label>
+          </div>
+          
+          <div class="input-field">
             <input type="password" name="password" id="passwordInput" required>
+            <label>رمز عبور خود را وارد کنید</label>
+          </div>
+          
+          <div class="password-generator">
+            <button type="button" id="generatePassword" class="btn btn-outline">تولید رمز عبور</button>
+            <div id="generatedPassword" class="generated-password"></div>
+          </div>
+          
+          <div class="terms">
+            <label for="agree">
+              <input type="checkbox" id="agree" required>
+              <p href="{{url_for ('tos')}}">قوانین و مقررات را می‌پذیرم</p>
+            </label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">ثبت‌نام</button>
+          
+          <div class="login-link">
+            <p>حساب کاربری دارید؟ <a href="{{ url_for('login') }}">وارد شوید</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+        <p>&copy; Libris — ساخته‌شده با عشق توسط vasi</p>
+        <div class="footer-links">
+            <a href="{{ url_for('home') }}#about">درباره ما</a>
+            <a href="/contact">تماس با ما</a>
+            <a href="/tos">قوانین و مقررات</a>
+            <a href="/privacy_policy">حریم خصوصی</a>
         </div>
-        <!-- دکمه تولید رمز عبور -->
-        <button type="button" id="generatePassword">تولید رمز عبور</button>
-        <!-- جای نمایش رمز تولید شده -->
-        <div id="generatedPassword">رمز تولید شده اینجا نمایش داده می‌شود.</div>
-        <br><br>
-        <input type="submit" value="ثبت‌نام">
-    </form>
+    </div>
+  </footer>
 
-    <script>
-        $(document).ready(function() {
-            $('#generatePassword').on('click', function(e) {
-                e.preventDefault();
-
-                // درخواست به سرور برای تولید رمز
-                $.get("{{ url_for('password_generator') }}", function(data) {
-                    // نمایش رمز در صفحه
-                    $('#generatedPassword').text('رمز تولید شده: ' + data.password);
-                });
-            });
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <script>
+    $(document).ready(function() {
+      $('#generatePassword').on('click', function(e) {
+        e.preventDefault();
+        
+        // درخواست به سرور برای تولید رمز
+        $.get("{{ url_for('password_generator') }}", function(data) {
+          // نمایش رمز در صفحه
+          $('#passwordInput').val(data.password);
+          $('#generatedPassword').text('رمز تولید شده: ' + data.password);
         });
-    </script>
-    <button><a href="{{ url_for('login') }}" class="back-link">بازگشت به صفحه ورود</a></button>
+      });
+    });
+  </script>
+
 </body>
 </html>

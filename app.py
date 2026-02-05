@@ -3,21 +3,13 @@ import requests, random, sqlite3
 from library import Library
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy 
+from models import db,Book,User
 
 app = Flask(__name__)
 app.secret_key = 'awesrdgtfhAWSEDTRYUIxCVGBHJ5247896532'
-
 app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///sqlite.db"
-db= SQLAlchemy(app)
 
-class User(db.Model):
-    __tablename__ = "users"
-    id= db.Column (db.Integer, primary_key= True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-
-    def __repr__ (self):
-        return self.email
+db.init_app(app)
 
 with app.app_context():
     db.create_all()
@@ -50,10 +42,7 @@ def login_required(f):
     return wrapper
 
 #-----------------------------------------------------
-
-@app.route('/')
-def index():
-    return render_template('main.html')
+#admin routes
 
 @app.route('/admin')
 def admin():
@@ -73,6 +62,13 @@ def delete_user():
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for('admin'))
+
+#-----------------------------------------------------
+#home routes
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -116,6 +112,31 @@ def register():
         return redirect (url_for("login"))
     return render_template("register.html")
 
+@app.route ("/password_generator")
+def password_generator():
+    text= "123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM[]\';,./@#$%"
+    password= ''.join(random.sample(text,12))
+    return jsonify({"password": password})
+
+@app.route ("/forgot_password")
+def forgot_password():
+    return render_template ("forgot_password.html")
+
+@app.route('/contact_us')
+def contact_us():
+    return render_template('contact_us.html')
+
+@app.route ('/tos')
+def tos():
+    return render_template('tos.html')
+
+@app.route ('/privacy_policy')
+def privacy_policy():
+    return render_template('privacy_policy.html')
+
+#-------------------------------------------
+#dashboard routes
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -126,16 +147,6 @@ def dashboard():
         return "<h1>ERORR</h1>"
     
     return render_template('dashboard.html', books=books)
-
-@app.route ("/password_generator")
-def password_generator():
-    text= "123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM[]\';,./@#$%"
-    password= ''.join(random.sample(text,12))
-    return jsonify({"password": password})
-
-@app.route ("/forgot_password")
-def forgot_password():
-    return render_template ("forgot_password.html")
 
 @app.route ("/view_books")
 @login_required
@@ -163,8 +174,8 @@ def add_book():
 @app.route("/delete_book")
 @login_required
 def delete_book():
+    title= request.form["title"]
     Library.load_books()
-    Library.search_book()
     Library.delete_book()
     Library.save_books()
 

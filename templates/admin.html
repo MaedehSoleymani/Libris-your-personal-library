@@ -1,5 +1,69 @@
-<ul>
-{% for user in users %}
-    <li>{{ user.email }} - {{ user.id }} - {{user.password}}</li>
-{% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل ادمین</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-container">
+      <div class="logo">📚 Libris</div>
+      <nav class="nav-links">
+        <a href="{{ url_for('home') }}">خانه</a>
+        <a href="#features">امکانات</a>
+        <a href="#about">درباره ما</a>
+        <a href="/contact">تماس با ما</a>
+        <a href="/tos">قوانین و مقررات</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Admin Content -->
+  <div class="section admin-wrapper">
+    <h2 class="section-title">پنل مدیریت کاربران</h2>
+    <p class="section-subtitle">لیست کاربران ثبت شده در سیستم</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ایمیل</th>
+            <th>رمز عبور</th>
+            <th>عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.password }}</td>
+            <td>
+              <a href="{{ url_for('edit_users', user_id=user.id) }}" class="btn btn-primary">ویرایش</a>
+              <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-outline">حذف</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; Libris — ساخته‌شده با عشق توسط vasi</p>
+      <div class="footer-links">
+        <a href="#about">درباره ما</a>
+        <a href="/contact">تماس با ما</a>
+        <a href="/tos">قوانین و مقررات</a>
+        <a href="/privacy_policy">حریم خصوصی</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

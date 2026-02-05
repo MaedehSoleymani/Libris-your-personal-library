@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیبریس — کتابخانهٔ شخصی شما</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">📚 Libris</div>
+            <nav class="nav-links">
+                <a href="{{ url_for('home') }}">خانه</a>
+                <a href="#features">امکانات</a>
+                <a href="#about">درباره ما</a>
+                <a href="/contact_us">تماس با ما</a>
+                <a href="/tos">قوانین و مقررات</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-outline">ورود</a>
+                <a href="{{ url_for('register') }}" class="btn btn-primary">ثبت‌نام</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>لیبریس<br>کتابخانه‌ی شخصی شما</h1>
+                    <p>ابزاری رایگان و متن‌باز برای مدیریت کتاب‌هایتان. بدون تبلیغات، بدون پیچیدگی، فقط تمرکز روی کتاب.</p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('register') }}" class="btn btn-primary">ثبت‌نام رایگان</a>
+                        <a href="#features" class="btn btn-outline">مشاهده امکانات</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pink-bubble"></div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title">چرا لیبریس؟</h2>
+            <p class="section-subtitle">طراحی‌شده برای عاشقان کتاب که می‌خواهند همه چیز را ساده و مرتب نگه دارند.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>مدیریت کتاب</h3>
+                    <p>ثبت عنوان، نویسنده، ژانر و وضعیت مطالعه در یک محیط آسان.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>جستجوی سریع</h3>
+                    <p>پیدا کردن کتاب مورد نظرتان در چند ثانیه، بدون دردسر.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>آمار شخصی</h3>
+                    <p>دنبال‌کردن پیشرفت مطالعه و ساخت آرشیوی از کتاب‌های خوانده‌شده.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>دسترسی هرجا</h3>
+                    <p>از هر دستگاهی به کتابخانهٔ شخصی‌تان دسترسی داشته باشید.</p>
+                </div>
+            </div>
+        </div>
+        <div class="pink-bubble"></div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">درباره ما</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                       لیبریس ساخته‌شده توسط vasi (واسی) — علاقه‌مند به برنامه‌نویسی و دنیای کتاب.<br>
+
+                        این پروژه یک ابزار ساده، کاربردی و شخصی برای عاشقان کتاب است؛ نه یک سیستم پیچیده برای کتابخانه‌های عمومی یا سازمانی.<br>
+
+                        با Python و Flask توسعه یافته و کاملاً متن‌باز است.<br>
+                        هر مشارکت، پیشنهاد یا بازخورد خیلی ارزشمند است!
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="pink-bubble"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; Libris — ساخته‌شده با عشق توسط vasi</p>
+            <div class="footer-links">
+                <a href="#about">درباره ما</a>
+                <a href="/contact">تماس با ما</a>
+                <a href="/tos">قوانین و مقررات</a>
+                <a href="/privacy_policy">حریم خصوصی</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
