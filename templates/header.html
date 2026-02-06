@@ -1,0 +1,24 @@
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Libris">
+        </div>
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}">خانه</a>
+            <a href="{{ url_for('home') }}#features">امکانات</a>
+            <a href="{{ url_for('home') }}#about">درباره ما</a>
+            <a href="/contact_us">تماس با ما</a>
+            <a href="/faq">سوالات متداول</a>
+        </nav>
+        <div class="auth-buttons">
+            {% if session.email %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline">حساب کاربری</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline">خروج</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-outline">ورود</a>
+                <a href="{{ url_for('register') }}" class="btn btn-primary">ثبت‌نام</a>
+            {% endif %}
+        </div>
+    </div>
+</header>

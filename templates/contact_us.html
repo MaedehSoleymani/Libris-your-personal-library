@@ -4,27 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تماس با ما | لیبریس</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/contact_us.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
 </head>
 <body>
 
     <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">📚 Libris</div>
-            <nav class="nav-links">
-                <a href="{{ url_for('home') }}">خانه</a>
-                <a href="{{ url_for('home') }}#features">امکانات</a>
-                <a href="{{ url_for('home') }}#about">درباره ما</a>
-                <a href="/contact_us">تماس با ما</a>
-                <a href="/tos">قوانین و مقررات</a>
-            </nav>
-            <div class="auth-buttons">
-                <a href="{{ url_for('login') }}" class="btn btn-outline">ورود</a>
-                <a href="{{ url_for('register') }}" class="btn btn-primary">ثبت‌نام</a>
-            </div>
-        </div>
-    </header>
+    {% include "header.html" %}
 
     <!-- Contact Section -->
     <section class="contact-section">
@@ -55,17 +42,7 @@
 
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; Libris — ساخته‌شده با عشق توسط vasi</p>
-            <div class="footer-links">
-                <a href="{{ url_for('home') }}#about">درباره ما</a>
-                <a href="/contact">تماس با ما</a>
-                <a href="/tos">قوانین و مقررات</a>
-                <a href="/privacy_policy">حریم خصوصی</a>
-            </div>
-        </div>
-    </footer>
+    {% include "footer.html" %}
 
 </body>
 </html>

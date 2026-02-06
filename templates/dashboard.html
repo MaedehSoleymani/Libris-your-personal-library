@@ -6,8 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>داشبورد کتابخانه</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
 </head>
 <body>
+
+  <!-- Header -->
+  {% include "header.html" %}
+
   <div class="dashboard-wrapper">
     <h1>داشبورد کتابخانه من</h1>
 
@@ -47,5 +55,8 @@
       <a href="{{ url_for ('add_book') }}" class="btn">اضافه کردن کتاب جدید</a>
     </div>
   </div>
+
+  <!-- footer -->
+   {% include "footer.html" %}
 </body>
 </html>

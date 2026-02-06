@@ -5,26 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ورود | لیبریس</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
 </head>
 <body>
 
   <!-- Header -->
-  <header>
-    <div class="container">
-      <div class="logo">📚 Libris</div>
-      <nav class="nav-links">
-        <a href="{{ url_for('home') }}">خانه</a>
-        <a href="{{ url_for('home') }}#features">امکانات</a>
-        <a href="{{ url_for('home') }}#about">درباره ما</a>
-        <a href="/contact_us">تماس با ما</a>
-        <a href="/tos">قوانین و مقررات</a>
-      </nav>
-      <div class="auth-buttons">
-        <a href="{{ url_for('register') }}" class="btn btn-outline">ثبت‌نام</a>
-      </div>
-    </div>
-  </header>
+  {% include "header.html" %}
 
   <!-- Login Section -->
   <section class="login-section section">
@@ -48,7 +36,7 @@
               <input type="checkbox" id="remember">
               <p>مرا به خاطر بسپار</p>
             </label>
-            <a href="#">رمز عبور را فراموش کرده‌اید؟</a>
+            <a href="{{url_for ('forgot_password')}}">رمز عبور را فراموش کرده‌اید؟</a>
           </div>
           
           <button type="submit" class="btn btn-primary">ورود</button>
@@ -62,17 +50,7 @@
   </section>
 
   <!-- Footer -->
-  <footer>
-      <div class="container">
-          <p>&copy; Libris — ساخته‌شده با عشق توسط vasi</p>
-          <div class="footer-links">
-              <a href="{{ url_for('home') }}#about">درباره ما</a>
-              <a href="/contact">تماس با ما</a>
-              <a href="/tos">قوانین و مقررات</a>
-              <a href="/privacy_policy">حریم خصوصی</a>
-          </div>
-      </div>
-  </footer>
+  {% include "footer.html" %}
 
 </body>
 </html>

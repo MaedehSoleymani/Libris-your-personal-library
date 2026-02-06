@@ -35,81 +35,6 @@ body::before {
   padding: 0 20px;
 }
 
-/* Header */
-header {
-  padding: 20px 0;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-header .container {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-}
-
-.logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 8px 16px;
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.nav-links {
-  justify-self: center;
-  display: flex;
-  gap: 24px;
-}
-
-.nav-links a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.3s;
-}
-.nav-links a:hover {
-  opacity: 0.8;
-}
-
-.auth-buttons {
-  display: flex;
-  gap: 12px;
-}
-
-.btn {
-  padding: 10px 24px;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.3s;
-  text-align: center;
-  border: none;
-  cursor: pointer;
-}
-.btn-outline {
-  background: transparent;
-  border: 1px solid #fff;
-  color: #fff;
-}
-.btn-outline:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-.btn-primary {
-  background: #fff;
-  color: #000;
-  width: 100%;
-}
-.btn-primary:hover {
-  background: rgba(255, 255, 255, 0.9);
-}
-
 /* Login Section */
 .login-section {
   padding: 100px 0 80px;
@@ -239,16 +164,6 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-  .auth-buttons {
-    gap: 8px;
-  }
-  .btn {
-    padding: 8px 20px;
-    font-size: 0.95rem;
-  }
   .wrapper {
     padding: 30px 20px;
     margin: 0 15px;

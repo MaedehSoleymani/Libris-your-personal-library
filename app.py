@@ -134,6 +134,10 @@ def tos():
 def privacy_policy():
     return render_template('privacy_policy.html')
 
+@app.route ('/faq')
+def faq():
+    return render_template ('faq.html')
+
 #-------------------------------------------
 #dashboard routes
 
