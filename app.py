@@ -23,7 +23,8 @@ def reset_db():
         with app.app_context():
             db.drop_all()
             db.create_all()
-            admin = User(email="admin", password="1234")
+            admin = User(email="admin")
+            admin.password= "1234"
             db.session.add(admin)
             db.session.commit()
         return "Database has been reset successfully. Admin user created."
@@ -74,19 +75,20 @@ def home():
 def login():
     try:
         if request.method == 'POST':
-            print("Form keys:", list(request.form.keys()))
-            print("Form data:", request.form)
             email = request.form.get('email')
             password = request.form.get('password')
-            print (email,password)
-            user= User.query.filter_by(email=email,password=password).first()
-            print (user)
-            if user:
+            user= User.query.filter_by(email=email).first()
+            if user and user.verify_password(password):
                 session['email'] = email
-                flash (f"welcome {user}","success")
+                print(f"user email: {email} - Password hash:{user.password_hash}")
+                flash ("با موفقیت وارد شدید.","success")
                 return redirect(url_for("dashboard"))
-            else:
-                return ("این نام کاربری وجود ندارد. آیا تمایل دارید اکانت بسازید؟")
+            elif user and not user.verify_password(password):
+                flash ("رمز عبور اشتباه است.", "error")
+                return redirect(url_for("dashboard"))
+            elif not user:
+                flash ("حساب کاربری‌ای با این ایمیل وجود ندارد.", "error")
+                return redirect(url_for("dashboard"))
     except Exception as e:
         return f"Error: {e}"
     return render_template('login.html')
@@ -102,13 +104,19 @@ def register():
     if request.method == "POST":
         email= request.form['email']
         password= request.form['password']
-        print (email,password)
-        print("Form keys:", list(request.form.keys()))
-        print("Form data:", request.form)
-        new_user= User (email=email, password=password)
-        print (new_user)
+        if len(password)<5:
+            flash("رمز عبور باید حداقل 5 کاراکتر باشد", "error")
+            return render_template("register.html")
+        existing_user= User.query.filter_by (email=email).first()
+        if existing_user:
+            flash ("حساب کاربری از قبل با این ایمیل وجود دارد.", "error")
+            return render_template("register.html")
+        new_user= User (email=email)
+        new_user.password= password
+        print(f"user email: {email} - Password hash:{new_user.password_hash}")
         db.session.add(new_user)
         db.session.commit()
+        flash ("حساب کاربری با موفقیت ساخته شد.", "success")
         return redirect (url_for("login"))
     return render_template("register.html")
 
@@ -137,6 +145,22 @@ def privacy_policy():
 @app.route ('/faq')
 def faq():
     return render_template ('faq.html')
+
+#-------------------------------------------
+#profile routes
+
+@app.route ('/profile')
+def profile():
+    user= User.query.filter_by (email=session['email']).first()
+    return render_template('profile.html',user=user)
+
+@app.route ('/delete_account')
+def delete_account():
+    pass
+
+@app.route ('/change_password')
+def change_password():
+    pass
 
 #-------------------------------------------
 #dashboard routes

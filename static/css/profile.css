@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+body {
+  direction: rtl;
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  line-height: 1.6;
+}
+
+/* Background Image */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/static/images/login_bg.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+/* Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Sections */
+.section {
+  padding: 80px 0;
+  position: relative;
+}
+
+.profile-section {
+  padding: 100px 0 80px;
+  position: relative;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #fff;
+}
+
+/* Profile Card */
+.profile-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 102, 255, 0.3); /* آبی شفاف */
+  border-radius: 16px;
+  padding: 40px;
+  display: grid;
+  gap: 40px;
+}
+
+/* Profile Info */
+.profile-info h2,
+.profile-actions h2 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: #0066ff; /* آبی اصلی */
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(0, 102, 255, 0.3); /* آبی شفاف */
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-label {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.info-value {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Profile Actions */
+.action-card {
+  background: rgba(0, 102, 255, 0.1); /* آبی بسیار شفاف */
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid rgba(0, 102, 255, 0.2); /* حاشیه آبی */
+}
+
+.action-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.2); /* سایه آبی */
+}
+
+.action-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  color: #0066ff; /* آبی اصلی */
+}
+
+.action-card p {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+/* Buttons */
+
+.delete-btn {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.delete-btn:hover {
+  background: rgba(244, 67, 54, 0.15);
+  border-color: #f44336;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 30px 20px;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .action-card {
+    padding: 20px;
+  }
+  
+  .btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

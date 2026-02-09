@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروفایل کاربری | لیبریس</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+
+    <!-- Header -->
+    {% include "header.html" %}
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <h1 class="section-title">پروفایل کاربری</h1>
+            
+            <div class="profile-card">
+                <div class="profile-info">
+                    <h2>اطلاعات حساب</h2>
+                    <div class="info-item">
+                        <span class="info-label">📧 ایمیل:</span>
+                        <span class="info-value">{{ user.email }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">🆔 شناسه کاربری:</span>
+                        <span class="info-value">{{ user.id }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">📅 تاریخ عضویت:</span>
+                        <span class="info-value">ثبت‌نام اولیه</span>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <h2>مدیریت حساب</h2>
+                    
+                    <div class="action-card">
+                        <h3>🔐 تغییر رمز عبور</h3>
+                        <p>رمز عبور خود را به روز کنید تا حساب شما ایمن بماند.</p>
+                        <a href="{{ url_for('change_password') }}" class="btn btn-primary">تغییر رمز عبور</a>
+                    </div>
+
+                    <div class="action-card">
+                        <h3>🗑️ حذف حساب</h3>
+                        <p>اگر مایل به حذف دائمی حساب کاربری خود هستید، می‌توانید آن را انجام دهید.</p>
+                        <a href="{{ url_for('delete_account') }}" class="btn btn-outline delete-btn" 
+                           onclick="return confirm('آیا مطمئن هستید؟ این عمل غیرقابل بازگشت است!')">حذف حساب</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+</body>
+</html>

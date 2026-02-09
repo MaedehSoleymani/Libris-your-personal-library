@@ -7,9 +7,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
 </head>
 <body>
+  <!-- Flash -->
+  {% include "flash.html" %}
 
   <!-- Header -->
   {% include "header.html" %}
