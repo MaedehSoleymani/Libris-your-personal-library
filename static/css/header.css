@@ -71,6 +71,11 @@ header .container {
   cursor: pointer;
 }
 
+.btn:hover {
+  background: #0052cc;
+  border-color: #0052cc;
+}
+
 .btn-outline {
   background: transparent;
   border: 1px solid #fff;
@@ -86,8 +91,23 @@ header .container {
   color: #000;
 }
 
+.btn-center {
+  display: flex;
+  justify-content: center;
+}
+
 .btn-primary:hover {
   background: rgba(255, 255, 255, 0.9);
+}
+
+.delete-btn {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.delete-btn:hover {
+  background: rgba(244, 67, 54, 0.15);
+  border-color: #f44336;
 }
 
 /* Responsive Header */

@@ -1,13 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, make_response, session
-import requests, random, sqlite3
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
+import requests, random
 from library import Library
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy 
 from models import db,Book,User
+from flask_mail import Mail, Message
+import config
+from emails.reset_password_email import reset_password_email
 
 app = Flask(__name__)
 app.secret_key = 'awesrdgtfhAWSEDTRYUIxCVGBHJ5247896532'
 app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///sqlite.db"
+
+app.config.from_object(config.Config)
+mail=Mail(app)
 
 db.init_app(app)
 
@@ -16,6 +22,9 @@ with app.app_context():
 
 email = "admin"
 PASSWORD = "1234"
+
+#-----------------------------------------------------
+#route functions
 
 @app.route("/reset_db")
 def reset_db():
@@ -94,6 +103,7 @@ def login():
     return render_template('login.html')
 
 @app.route('/logout')
+@login_required
 def logout():
     session.clear()
     flash("شما با موفقیت خارج شدید.", "success") 
@@ -102,8 +112,8 @@ def logout():
 @app.route ("/register", methods=["POST","GET"])
 def register():
     if request.method == "POST":
-        email= request.form['email']
-        password= request.form['password']
+        email= request.form.get("email")
+        password= request.form.get("password")
         if len(password)<5:
             flash("رمز عبور باید حداقل 5 کاراکتر باشد", "error")
             return render_template("register.html")
@@ -126,8 +136,35 @@ def password_generator():
     password= ''.join(random.sample(text,12))
     return jsonify({"password": password})
 
-@app.route ("/forgot_password")
+@app.route ('/reset_password<token>')
+def reset_password(token):
+    user= User.query.filter_by(reset_token=token).first()
+    if not user:
+        flash ("لینک منقضی شده.","error")
+        return render_template('forgot password.html')
+    else:
+        return render_template('reset_password.html',token=token)
+
+@app.route ("/forgot_password", methods= ["POST", "GET"])
 def forgot_password():
+    if request.method == "POST":
+        email= request.form.get("email")
+        user= User.query.filter_by(email=email).first()
+        if user:
+            print(f"ارسال ایمیل به: {email}")
+            token= user.generate_reset_token()
+            db.session.commit()
+            reset_link= url_for ('reset_password', token=token, )
+            msg= Message (
+                subject= "لیبریس - تغییر رمز عبور",
+                recipients=[email],
+                html=reset_password_email(reset_link))
+            mail.send(msg)
+            flash ("ایمیل بازیابی رمز عبور با موفقیت ارسال شد. لطفا ایمیل خود را بررسی کرده و بر روی لینک کلیک کنید.","success")
+            return render_template('forgot_password.html')
+        else:
+            flash ("حساب کاربری‌ای با این ایمیل وجود ندارد.","error")
+            return render_template('forgot_password.html')
     return render_template ("forgot_password.html")
 
 @app.route('/contact_us')
@@ -150,16 +187,15 @@ def faq():
 #profile routes
 
 @app.route ('/profile')
+@login_required
 def profile():
+    print ("current email:", session.get('email'))
     user= User.query.filter_by (email=session['email']).first()
     return render_template('profile.html',user=user)
 
 @app.route ('/delete_account')
+@login_required
 def delete_account():
-    pass
-
-@app.route ('/change_password')
-def change_password():
     pass
 
 #-------------------------------------------
@@ -186,11 +222,11 @@ def view_books():
 @login_required
 def add_book():
     if request.method=="POST":
-        title= request.form["title"]
-        author= request.form["author"]
-        pages= request.form["pages"]
-        genre= request.form["genre"]
-        status= request.form["status"]
+        title= request.form.get("title")
+        author= request.form.get("author")
+        pages= request.form.get("pages")
+        genre= request.form.get("genre")
+        status= request.form.get("status")
         Library.load_books()
         Library.add_book (title, author, pages, genre, status)
         book = Library.book_list[-1]  # آخرین کتاب
@@ -202,7 +238,7 @@ def add_book():
 @app.route("/delete_book")
 @login_required
 def delete_book():
-    title= request.form["title"]
+    title= request.form.get("title")
     Library.load_books()
     Library.delete_book()
     Library.save_books()

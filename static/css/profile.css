@@ -92,43 +92,31 @@ body::before {
   font-weight: 500;
 }
 
-/* Profile Actions */
 .action-card {
-  background: rgba(0, 102, 255, 0.1); /* آبی بسیار شفاف */
+  background: rgba(0, 102, 255, 0.1);
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 20px;
   transition: transform 0.3s, box-shadow 0.3s;
-  border: 1px solid rgba(0, 102, 255, 0.2); /* حاشیه آبی */
+  border: 1px solid rgba(0, 102, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.action-card h3,
+.action-card p {
+  text-align: center;
+  width: 100%;
+}
+
+.action-card .btn {
+  margin-top: 15px;
 }
 
 .action-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 102, 255, 0.2); /* سایه آبی */
-}
-
-.action-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 12px;
-  color: #0066ff; /* آبی اصلی */
-}
-
-.action-card p {
-  color: rgba(255, 255, 255, 0.85);
-  margin-bottom: 20px;
-  line-height: 1.7;
-}
-
-/* Buttons */
-
-.delete-btn {
-  border-color: #f44336;
-  color: #f44336;
-}
-
-.delete-btn:hover {
-  background: rgba(244, 67, 54, 0.15);
-  border-color: #f44336;
 }
 
 /* Responsive */
