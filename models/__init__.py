@@ -4,3 +4,4 @@ db = SQLAlchemy()
 
 from .users import User
 from .books import Book
+from .contact_us import ContactMessage

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ویرایش کتاب</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_book.css') }}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+
+  <div class="wrapper">
+    <form action="{{ url_for('edit_book', book_id=book.id) }}" method="post">
+      <h2>ویرایش کتاب</h2>
+      
+      <div class="input-field">
+        <input type="text" name="title" value="{{ book.title }}" required>
+        <label>عنوان کتاب</label>
+      </div>
+      
+      <div class="input-field">
+        <input type="text" name="author" value="{{ book.author }}" required>
+        <label>نویسنده</label>
+      </div>
+      
+      <div class="input-field">
+        <input type="number" name="pages" value="{{ book.pages }}" required>
+        <label>تعداد صفحات</label>
+      </div>
+      
+      <div class="input-field">
+        <input type="text" name="genre" value="{{ book.genre }}" required>
+        <label>ژانر</label>
+      </div>
+      
+      <div class="input-field">
+        <select name="status" required>
+          <option value="خوانده شده" {% if book.status == "خوانده شده" %}selected{% endif %}>خوانده شده</option>
+          <option value="در حال مطالعه" {% if book.status == "در حال مطالعه" %}selected{% endif %}>در حال مطالعه</option>
+          <option value="خوانده نشده" {% if book.status == "خوانده نشده" %}selected{% endif %}>خوانده نشده</option>
+        </select>
+        <label>وضعیت کتاب</label>
+      </div>
+      
+      <button type="submit">ذخیره تغییرات</button>
+      <a href="{{ url_for('dashboard') }}" class="cancel-link">لغو</a>
+    </form>
+  </div>
+
+</body>
+</html>

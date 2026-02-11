@@ -28,5 +28,5 @@ class User(db.Model):
     
     def generate_reset_token(self):
         self.reset_token= secrets.token_urlsafe(32)
-        self.reset_token_expire= datetime.now(timezone.utc)+ timedelta (minutes=30)
+        self.reset_token_expire= datetime.now()+ timedelta (minutes=30)
         return self.reset_token

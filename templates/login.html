@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
 </head>
 <body>
+  
   <!-- Flash -->
   {% include "flash.html" %}
 
@@ -39,7 +40,7 @@
               <input type="checkbox" id="remember">
               <p>مرا به خاطر بسپار</p>
             </label>
-            <a href="{{url_for ('forgot_password')}}">رمز عبور را فراموش کرده‌اید؟</a>
+            <a href="{{url_for ('change_password')}}">رمز عبور را فراموش کرده‌اید؟</a>
           </div>
           
           <button type="submit" class="btn btn-primary">ورود</button>

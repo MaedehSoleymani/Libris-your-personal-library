@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست پیام‌ها | لیبریس</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/show_message.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+
+    <!-- Flash Messages -->
+    {% include "flash.html" %}
+
+    <!-- Header -->
+    {% include "header.html" %}
+
+    <!-- Show Messages Section -->
+    <section class="show-messages-section">
+        <div class="container">
+            <h1 class="section-title">لیست پیام‌ها</h1>
+            
+            {% if messages %}
+                <div class="messages-list">
+                    {% for message in messages %}
+                        <div class="message-item">
+                            <div class="message-header">
+                                <h2>
+                                    <a href="{{ url_for('show_message', message_id=message.id) }}" 
+                                       class="message-link">
+                                        پیام #{{ message.id }}
+                                    </a>
+                                </h2>
+                                <span class="message-date">{{ message.created_time.strftime('%Y-%m-%d %H:%M') }}</span>
+                            </div>
+                            
+                            <div class="message-preview">
+                                <div class="message-field">
+                                    <span class="field-label">📧 ایمیل:</span>
+                                    <span class="field-value">{{ message.email }}</span>
+                                </div>
+                                
+                                <div class="message-field">
+                                    <span class="field-label">📝 پیام:</span>
+                                    <p class="message-text-preview">
+                                        {{ message.message[:100] }}{% if message.message|length > 100 %}...{% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="message-actions">
+                                <a href="{{ url_for('show_message', message_id=message.id) }}" 
+                                   class="btn btn-outline">
+                                    مشاهده کامل
+                                </a>
+                                <a href="{{ url_for('delete_message', message_id=message.id) }}" 
+                                   class="btn btn-delete"
+                                   onclick="return confirm('آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟')">
+                                    حذف
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-messages">
+                    <p>پیامی وجود ندارد.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+</body>
+</html>

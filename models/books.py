@@ -1,5 +1,5 @@
-from sqlalchemy import Enum
 from . import db
+from sqlalchemy import Enum
 
 class Book (db.Model):
     __tablename__= "books"
