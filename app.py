@@ -300,7 +300,9 @@ def add_book():
         genre= request.form.get("genre")
         status= request.form.get("status")
         rating = request.form.get("rating")
-        if rating:
+        if rating== '' or rating is None:
+            rating= None
+        else:
             try:
                 rating_float = float(rating)
                 if not (0 <= rating_float <= 5):
