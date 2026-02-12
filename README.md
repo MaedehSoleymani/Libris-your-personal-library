@@ -1,30 +1,222 @@
-📚 لیبریس (Libris):
-لیبریس یک وب‌اپلیکیشن برای مدیریت کتابخانه‌ی شخصی است که به شما کمک می‌کند کتاب‌های خود را به‌صورت منظم، ساده و کاربردی دسته‌بندی و مدیریت کنید.
-با لیبریس می‌توانید مجموعه‌ی کتاب‌های خود را در یک محیط تمیز و مینیمال ثبت کنید، کتاب‌هایی که دارید یا قصد خواندنشان را دارید را پیگیری کنید و یک آرشیو شخصی از کتاب‌هایتان بسازید.
-این پروژه با تمرکز بر سادگی، خوانایی و قابلیت توسعه طراحی شده و هم می‌تواند یک ابزار کاربردی شخصی باشد و هم پایه‌ای مناسب برای اضافه‌کردن امکانات پیشرفته‌تر در آینده؛ مثل یادداشت‌برداری، برچسب‌گذاری، جستجو و پیگیری وضعیت مطالعه.
+# فارسی:
 
-✨ اهداف پروژه:
-سامان‌دهی و مدیریت کتاب‌های کتابخانه‌ی شخصی
-ارائه‌ی یک رابط کاربری ساده و بدون پیچیدگی
-فراهم‌کردن بستری قابل توسعه برای امکانات آینده
+# 📚 لیبریس — سیستم مدیریت کتابخانه شخصی
 
-🚀 چرا لیبریس؟:
-ساده — بدون امکانات اضافه و گیج‌کننده
-شخصی — مناسب استفاده‌ی فردی، نه سازمانی
-قابل توسعه — آماده برای اضافه‌شدن ویژگی‌های جدید
+**لیبریس** یک برنامهٔ تحت وب برای مدیریت کتابخانهٔ شخصی است که با **فلسک (Flask)** ساخته شده است.  
+این سیستم به کاربران اجازه می‌دهد ثبت‌نام کنند، مجموعهٔ کتاب‌های خود را مدیریت کنند، وضعیت مطالعه را ردیابی کنند و کتابخانهٔ شخصی‌شان را در یک رابط کاربری تمیز و مینیمال سازماندهی کنند.
+
+این پروژه به عنوان یک تمرین عملی در حوزهٔ **توسعه بک‌اند** طراحی شده و تمرکز ویژه‌ای بر **احراز هویت، طراحی پایگاه داده و ساختار قابل گسترش** دارد.
+
+---
+
+## 🚀 ویژگی‌ها
+
+### 🔐 سیستم احراز هویت
+- ثبت‌نام و ورود کاربران  
+- هش امن رمز عبور  
+- احراز هویت مبتنی بر session  
+- بازیابی رمز عبور از طریق ایمیل با توکن محدود به زمان  
+- کنترل دسترسی مبتنی بر نقش (ادمین / کاربر عادی)
+
+### 📚 مدیریت کتاب
+- اضافه، ویرایش و حذف کتاب  
+- ردیابی وضعیت مطالعه (خوانده نشده / در حال مطالعه / خوانده شده)  
+- دسته‌بندی کتاب‌ها بر اساس ژانر  
+- استفاده از سیستم `enum` برای ثبات داده‌ها
+
+### 👤 داشبورد کاربر
+- داشبورد شخصی برای مدیریت کتاب‌ها  
+- صفحهٔ پروفایل  
+- کنترل دسترسی ادمین
+
+### 📩 سیستم تماس
+- فرم تماس با ذخیره‌سازی در دیتابیس  
+- پنل ادمین برای مشاهده و مدیریت پیام‌ها
+
+### 💬 رابط کاربری و تجربه کاربری
+- رابط تمیز و مینیمال  
+- سیستم پیام‌رسانی (Flash Messages)  
+- طراحی واکنش‌گرا (Responsive)  
+- پشتیبانی از زبان‌های راست‌به‌چپ (فارسی)
+
+---
+
+## 🛠 فناوری‌های استفاده‌شده
+
+**بک‌اند**  
+- Python  
+- Flask  
+- Flask-SQLAlchemy  
+- Jinja2  
+- Werkzeug Security  
+
+**پایگاه داده**  
+- SQLite (برای محیط توسعه)
+
+**فرانت‌اند**  
+- HTML5  
+- CSS3  
+- قالب‌های Jinja
+
+---
+
+## ⚙️ راه‌اندازی و نصب
+
+```bash
+git clone https://github.com/yourusername/libris.git
+cd libris
+python -m venv venv
+source venv/bin/activate        # در لینوکس/مک
+# یا
+venv\Scripts\activate          # در ویندوز
+pip install -r requirements.txt
+python app.py
+```
+
+برنامه به صورت محلی روی آدرس زیر اجرا می‌شود:
+```
+http://127.0.0.1:5000/
+```
+
+## 🔒 ملاحظات امنیتی
+- رمزهای عبور با استفاده از کتابخانهٔ Werkzeug هش می‌شوند.
+- توکن‌های بازیابی رمز عبور محدود به زمان هستند.
+- دسترسی به روت‌های ادمین محدود شده است.
+- اعتبارسنجی فرم‌ها در سمت سرور انجام می‌شود.
+- 📈 بهبودهای آینده
+- سیستم جستجو و فیلتر
+- صفحه‌بندی (Pagination)
+- نسخهٔ REST API
+- پشتیبانی از PostgreSQL
+- کانتینری‌سازی با Docker
+- ردیابی پیشرفت مطالعه
+- سیستم برچسب‌گذاری (Tagging)
+- تست‌های واحد (Unit Tests)
+
+## 🎯 هدف پروژه
+- این پروژه به عنوان یک تمرین عملی در توسعه بک‌اند ساخته شده تا مهارت‌های زیر را تقویت کند:
+- سیستم‌های احراز هویت
+- مدل‌سازی پایگاه داده
+- کنترل دسترسی مبتنی بر نقش
+- گردش‌های کاری مبتنی بر توکن
+- معماری برنامه‌های Flask
+
+این پروژه نشان‌دهندهٔ توانایی در ساخت یک برنامهٔ تحت وب ساختاریافته، امن و قابل گسترش است.
 
 
-📚 Libris:
-Libris is a web-based personal library application designed to help you organize, catalog, and manage your book collection in a simple and intuitive way.
-Whether you’re tracking books you own, planning what to read next, or building a personal archive, Libris gives you a clean interface and structured system to keep everything in one place.
-Built with a focus on clarity, usability, and extensibility, Libris is suitable both as a practical personal tool and as a foundation for future features such as reading progress, notes, tagging, and search.
+# ENGLISH:
 
-✨ Key Goals:
-Keep your personal book collection organized
-Provide a minimal and distraction-free user experience
-Serve as a scalable base for more advanced library features
+# 📚 Libris — Personal Library Management System
 
-🚀 Why Libris?
-Simple — no unnecessary complexity
-Personal — designed for individual libraries, not institutions
-Extensible — easy to expand with new features over time
+Libris is a web-based personal library management application built with **Flask**.  
+It allows users to register, manage their book collection, track reading status, and organize their personal library through a clean and minimal interface.
+
+This project was developed as a backend-focused practice application with attention to authentication, database design, and scalable structure.
+
+---
+
+## 🚀 Features
+
+### 🔐 Authentication System
+- User registration & login
+- Secure password hashing
+- Session-based authentication
+- Password reset via email with time-limited token
+- Role-based access (Admin / User)
+
+### 📚 Book Management
+- Add, edit, and delete books
+- Track reading status (Unread / Reading / Completed)
+- Categorize books by genre
+- Enum-based status system for data consistency
+
+### 👤 User Dashboard
+- Personal dashboard for managing books
+- Profile page
+- Admin access control
+
+### 📩 Contact System
+- Contact form with database storage
+- Admin panel for viewing and managing messages
+
+### 💬 UI & UX
+- Clean, minimal interface
+- Flash messaging system
+- Responsive layout
+- RTL support (Persian)
+
+---
+
+## 🛠 Tech Stack
+
+**Backend**
+- Python
+- Flask
+- Flask-SQLAlchemy
+- Jinja2
+- Werkzeug Security
+
+**Database**
+- SQLite (development)
+
+**Frontend**
+- HTML5
+- CSS3
+- Jinja Templates
+
+---
+
+## ⚙️ Setup & Installation
+
+```bash
+git clone https://github.com/yourusername/libris.git
+cd libris
+python -m venv venv
+Linux: source venv/bin/activate 
+#or 
+Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
+```
+
+The application runs locally on:
+
+```
+http://127.0.0.1:5000/
+```
+
+---
+
+## 🔒 Security Considerations
+
+- Passwords are hashed using Werkzeug.
+- Reset tokens are time-limited.
+- Admin routes are access-restricted.
+- Form validation is handled server-side.
+
+---
+
+## 📈 Future Improvements
+
+- Search & filtering system
+- Pagination
+- REST API version
+- PostgreSQL support
+- Docker containerization
+- Reading progress tracking
+- Tagging system
+- Unit tests
+
+---
+
+## 🎯 Project Purpose
+
+This project was built as a backend development practice to strengthen:
+
+- Authentication systems
+- Database modeling
+- Role-based access control
+- Token-based workflows
+- Flask application architecture
+
+It demonstrates practical experience in building a structured and extendable web application.
