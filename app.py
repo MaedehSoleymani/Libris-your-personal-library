@@ -7,7 +7,6 @@ from flask_mail import Mail, Message
 import config
 from emails.reset_password_email import reset_password_email
 from datetime import datetime, timezone
-
 app = Flask(__name__)
 app.secret_key = 'awesrdgtfhAWSEDTRYUIxCVGBHJ5247896532'
 app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///sqlite.db"
@@ -20,83 +19,95 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-email = "admin"
-PASSWORD = "1234"
+#-----------------------------------------------------
+#create admin
+
+try:
+    from gitignore.create_admin import create_admin, add_reset_routes
+    add_reset_routes(app, db)
+    @app.route('/create_admin')
+    def create_admin_users():
+        return create_admin()
+        
+except ImportError:
+    pass
 
 #-----------------------------------------------------
-#route functions
-
-@app.route("/user_reset_db")
-def user_reset_db():
-    try:
-        with app.app_context():
-            User.__table__.drop(db.engine)
-            User.__table__.create(db.engine)
-            admin = User(email="admin")
-            admin.password= "1234"
-            db.session.add(admin)
-            db.session.commit()
-        return "Database has been reset successfully. Admin user created."
-    except Exception as e:
-        return f"Error resetting database: {e}"
-
-@app.route("/book_reset_db")
-def book_reset_db():
-    try:
-        with app.app_context():
-            Book.__table__.drop(db.engine)
-            Book.__table__.create(db.engine)
-        return "Database has been reset successfully."
-    except Exception as e:
-        return f"Error resetting database: {e}"
-    
-@app.route("/ContactMessage_reset_db")
-def ContactMessage_reset_db():
-    try:
-        with app.app_context():
-            ContactMessage.__table__.drop(db.engine)
-            ContactMessage.__table__.create(db.engine)
-        return "Database has been reset successfully."
-    except Exception as e:
-        return f"Error resetting database: {e}"
-#-----------------------------------------------------
-#non route functions
+#login required functions
 
 def login_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         if "email" not in session:
+            flash("ابتدا وارد حساب کاربری خود شوید.","error")
             return redirect(url_for("login"))
         return f(*args, **kwargs)
     return wrapper
 
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'email' not in session:
+            flash("برای دسترسی به این بخش باید وارد حساب کاربری خود شوید.", "error")
+            return redirect(url_for('login'))
+        user = User.query.filter_by(email=session['email']).first()
+        if user and user.admin:
+            return f(*args, **kwargs)
+        else:
+            flash("شما دسترسی ادمین ندارید.", "error")
+            return redirect(url_for('dashboard'))
+    return decorated_function
+
+#-----------------------------------------------------
+#giving user to all the routes
+
+@app.context_processor
+def inject_user():
+    if 'email' in session:
+        user = User.query.filter_by(email=session['email']).first()
+        return dict(user=user)
+    return dict(user=None)
+
 #-----------------------------------------------------
 #admin routes
-
 @app.route('/admin')
+@admin_only
 def admin():
+    return render_template ('admin.html')
+
+@app.route('/admin/manage_users')
+@admin_only
+def admin_manage_users():
     users=User.query.all()
-    return render_template("admin.html",users=users)
+    return render_template("admin_manage_users.html",users=users)
     
-@app.route('/show_message')
-def show_message():
+@app.route('/admin/show_message')
+@admin_only
+def admin_show_message():
     messages= ContactMessage.query.all()
-    return render_template ('show_message.html', messages=messages)
+    return render_template ('admin_show_message.html', messages=messages)
 
-@app.route('/delete_message')
-def delete_message():
-    return redirect (url_for('show_message'))
+@app.route('/delete_message/<message_id>')
+@admin_only
+def delete_message(message_id):
+    message= ContactMessage.query.get_or_404(message_id)
+    db.session.delete(message)
+    db.session.commit()
+    flash ("پیام با موفقیت حذف شد.","success")
+    return redirect (url_for('admin_show_message'))
 
-@app.route('/edit_users/int:<user_id>')
-def edit_users(user_id):
+@app.route('/edit_user/int:<user_id>')
+@admin_only
+def edit_user(user_id):
     user= User.query.get_or_404(user_id).first()
     user.email=request.form.get('new_email')
     db.session.commit()
     return redirect(url_for('admin'))
 
 @app.route('/delete_user/<int:user_id>')
+@admin_only
 def delete_user(user_id):
-    user=User.query.get_or_404(user_id).first()
+    user=User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for('admin'))
@@ -111,20 +122,25 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     try:
-        if request.method == 'POST':
-            email = request.form.get('email')
-            password = request.form.get('password')
-            user= User.query.filter_by(email=email).first()
-            if user and user.verify_password(password):
-                session['email'] = email
-                flash ("با موفقیت وارد شدید.","success")
-                return redirect(url_for("dashboard"))
-            elif user and not user.verify_password(password):
-                flash ("رمز عبور اشتباه است.", "error")
-                return redirect(url_for("login"))
-            elif not user:
-                flash ("حساب کاربری‌ای با این ایمیل وجود ندارد.", "error")
-                return redirect(url_for("login"))
+        if 'email' in session:
+            flash("شما داخل حساب کاربری خود هستید.","error")
+            return redirect(url_for("profile"))
+        else:
+            if request.method == 'POST':
+                email = request.form.get('email')
+                password = request.form.get('password')
+                user= User.query.filter_by(email=email).first()
+                if user and user.verify_password(password):
+                    session['email']= user.email
+                    session['admin']= user.admin
+                    flash ("با موفقیت وارد شدید.","success")
+                    return redirect(url_for("dashboard"))
+                elif user and not user.verify_password(password):
+                    flash ("رمز عبور اشتباه است.", "error")
+                    return redirect(url_for("login"))
+                elif not user:
+                    flash ("حساب کاربری‌ای با این ایمیل وجود ندارد.", "error")
+                    return redirect(url_for("login"))
     except Exception as e:
         return f"Error: {e}"
     return render_template('login.html')
@@ -138,22 +154,26 @@ def logout():
 
 @app.route ("/register", methods=["POST","GET"])
 def register():
-    if request.method == "POST":
-        email= request.form.get("email")
-        password= request.form.get("password")
-        if len(password)<5:
-            flash("رمز عبور باید حداقل 5 کاراکتر باشد", "error")
-            return redirect (url_for('register'))
-        existing_user= User.query.filter_by (email=email).first()
-        if existing_user:
-            flash ("حساب کاربری از قبل با این ایمیل وجود دارد.", "error")
-            return redirect (url_for('register'))
-        new_user= User (email=email)
-        new_user.password= password
-        db.session.add(new_user)
-        db.session.commit()
-        flash ("حساب کاربری با موفقیت ساخته شد.", "success")
-        return redirect (url_for('login'))
+    if 'email' in session:
+        flash("شما داخل حساب کاربری خود هستید.","error")
+        return redirect(url_for('profile'))
+    else:
+        if request.method == "POST":
+            email= request.form.get("email")
+            password= request.form.get("password")
+            if len(password)<5:
+                flash("رمز عبور باید حداقل 5 کاراکتر باشد", "error")
+                return redirect (url_for('register'))
+            existing_user= User.query.filter_by (email=email).first()
+            if existing_user:
+                flash ("حساب کاربری از قبل با این ایمیل وجود دارد.", "error")
+                return redirect (url_for('register'))
+            new_user= User (email=email)
+            new_user.password= password
+            db.session.add(new_user)
+            db.session.commit()
+            flash ("حساب کاربری با موفقیت ساخته شد.", "success")
+            return redirect (url_for('login'))
     return render_template('register.html')
 
 @app.route ("/password_generator")
@@ -279,7 +299,21 @@ def add_book():
         pages= request.form.get("pages")
         genre= request.form.get("genre")
         status= request.form.get("status")
-        book = Book (title=title,author=author,pages=pages,genre=genre,status=status)
+        rating = request.form.get("rating")
+        if rating:
+            try:
+                rating_float = float(rating)
+                if not (0 <= rating_float <= 5):
+                    flash("امتیاز باید بین 0 تا 5 باشد!", "error")
+                    return redirect(url_for('add_book'))                
+                if len(str(rating_float).split('.')[-1]) > 2:
+                    flash("امتیاز فقط می‌تواند دو رقم اعشار داشته باشد!", "error")
+                    return redirect(url_for('add_book'))  
+            except ValueError:
+                flash("امتیاز وارد شده معتبر نیست!", "error")
+                return redirect(url_for('add_book'))
+        comment= request.form.get("comment")
+        book = Book (title=title,author=author,pages=pages,genre=genre,status=status,rating=rating,comment=comment)
         db.session.add(book)
         db.session.commit()
         flash("کتاب با موفقیت اضافه شد.", "success")
@@ -310,15 +344,15 @@ def edit_book(book_id):
         return redirect(url_for("dashboard"))
     return render_template ('edit_book.html', book=book)
 
-@app.route("/search_book")
+@app.route("/search_book",methods=['GET'])
 @login_required
 def search_book():
     query= request.args.get('q','').strip()
     if query:
-        book=Book.query.filter(Book.title.ilike(f'%{query}%')).all()
+        books=Book.query.filter(Book.title.ilike(f'%{query}%')).all()
     else:
         books=[]
-    return render_template('dashboard.html', book=book, search_query=query)
+    return render_template('dashboard.html', books=books, search_query=query)
 
 if __name__ == '__main__':
     app.run(debug=True)

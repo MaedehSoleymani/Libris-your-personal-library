@@ -1,23 +1,12 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لیست پیام‌ها | لیبریس</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/show_message.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
-</head>
-<body>
+{% extends "admin.html" %}
 
-    <!-- Flash Messages -->
-    {% include "flash.html" %}
+{% block title %}لیست پیام‌ها{% endblock %}
 
-    <!-- Header -->
-    {% include "header.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_show_message.css') }}">
+{% endblock %}
 
+{% block content %}
     <!-- Show Messages Section -->
     <section class="show-messages-section">
         <div class="container">
@@ -29,7 +18,7 @@
                         <div class="message-item">
                             <div class="message-header">
                                 <h2>
-                                    <a href="{{ url_for('show_message', message_id=message.id) }}" 
+                                    <a href="{{ url_for('admin_manage_users', message_id=message.id) }}" 
                                        class="message-link">
                                         پیام #{{ message.id }}
                                     </a>
@@ -52,7 +41,7 @@
                             </div>
                             
                             <div class="message-actions">
-                                <a href="{{ url_for('show_message', message_id=message.id) }}" 
+                                <a href="{{ url_for('admin_manage_users', message_id=message.id) }}" 
                                    class="btn btn-outline">
                                     مشاهده کامل
                                 </a>
@@ -71,10 +60,4 @@
                 </div>
             {% endif %}
         </div>
-    </section>
-
-    <!-- Footer -->
-    {% include "footer.html" %}
-
-</body>
-</html>
+{% endblock %}

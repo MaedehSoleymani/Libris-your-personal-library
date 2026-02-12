@@ -1,0 +1,48 @@
+{% extends "admin.html" %}
+
+{% block title %}پنل مدیریت کاربران{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_manage_users.css') }}">
+{% endblock %}
+
+{% block content %}
+  <!-- Admin Content -->
+  <div>
+    <div class="section admin-wrapper">
+      <h2 class="section-title">پنل مدیریت کاربران</h2>
+      <p class="section-subtitle">لیست کاربران ثبت شده در سیستم</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>ایمیل</th>
+              <th>نقش</th>
+              <th>عملیات</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                {% if user.admin==True %}
+                ادمین
+                {% else %}
+                کاربر عادی
+                {% endif%}
+              </td>
+              <td>
+                <a href="{{ url_for('edit_user', user_id=user.id) }}" class="btn btn-primary">ویرایش</a>
+                <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-primary delete-btn">حذف</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

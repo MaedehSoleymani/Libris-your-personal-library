@@ -28,8 +28,41 @@
         <label>تعداد صفحات</label>
       </div>
       
-      <div class="input-field">
-        <input type="text" name="genre" value="{{ book.genre }}" required>
+      <!-- ژانر -->
+      <div class="input-field select-field">
+        <select name="genre" required>
+          <option value="" disabled selected>انتخاب ژانر</option>
+          <option value="ادبیات کلاسیک">ادبیات کلاسیک</option>
+          <option value="فانتزی">فانتزی</option>
+          <option value="علمی‌تخیلی">علمی‌تخیلی</option>
+          <option value="راز و رمز">راز و رمز</option>
+          <option value="جنایی">جنایی</option>
+          <option value="عاشقانه">عاشقانه</option>
+          <option value="تاریخی">تاریخی</option>
+          <option value="زندگینامه">زندگینامه</option>
+          <option value="خودیاری">خودیاری</option>
+          <option value="فانتزی تاریخی">فانتزی تاریخی</option>
+          <option value="ترسناک">ترسناک</option>
+          <option value="ماجراجویی">ماجراجویی</option>
+          <option value="درام">درام</option>
+          <option value="کودک">کودک</option>
+          <option value="نوجوان">نوجوان</option>
+          <option value="شعر">شعر</option>
+          <option value="نمایشنامه">نمایشنامه</option>
+          <option value="غیرداستانی">غیرداستانی</option>
+          <option value="فلسفه">فلسفه</option>
+          <option value="روانشناسی">روانشناسی</option>
+          <option value="علمی">علمی</option>
+          <option value="تاریخ">تاریخ</option>
+          <option value="سیاسی">سیاسی</option>
+          <option value="اقتصادی">اقتصادی</option>
+          <option value="مذهبی">مذهبی</option>
+          <option value="سفر">سفر</option>
+          <option value="آشپزی">آشپزی</option>
+          <option value="ورزشی">ورزشی</option>
+          <option value="هنر">هنر</option>
+          <option value="موسیقی">موسیقی</option>
+        </select>
         <label>ژانر</label>
       </div>
       
@@ -42,6 +75,30 @@
         <label>وضعیت کتاب</label>
       </div>
       
+      <!-- ریتینگ با محدودیت 3 رقم -->
+      <div class="input-field">
+        <input 
+          type="number" 
+          name="rating" 
+          step="0.01" 
+          min="0" 
+          max="5"
+          placeholder="مثال: 4.50"
+        >
+        <label>امتیاز (0 تا 5 - اختیاری)</label>
+      </div>
+      
+      <!-- کامنت -->
+      <div class="input-field">
+        <textarea 
+          name="comment" 
+          rows="4" 
+          maxlength="5000"
+          placeholder="نظر شما درباره کتاب..."
+        ></textarea>
+        <label>نظر (اختیاری)</label>
+      </div>
+
       <button type="submit">ذخیره تغییرات</button>
       <a href="{{ url_for('dashboard') }}" class="cancel-link">لغو</a>
     </form>

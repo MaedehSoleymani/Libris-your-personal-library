@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پنل ادمین</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- عنوان متغیر -->
+    <title>{% block title %}پنل ادمین{% endblock %} | لیبریس</title>
+    
+    <!-- CSS ها -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-  <!-- Header -->
-  {% include "header.html" %}
 
-  <!-- Admin Content -->
-  <div>
-    <div class="section admin-wrapper">
-      <h2 class="section-title">پنل مدیریت کاربران</h2>
-      <p class="section-subtitle">لیست کاربران ثبت شده در سیستم</p>
-      <button><a href="{{url_for ('show_message')}}">برای دیدن فرم های ثبت شده کلیک  کنید</a></button>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>ایمیل</th>
-              <th>عملیات</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for user in users %}
-            <tr>
-              <td>{{ user.id }}</td>
-              <td>{{ user.email }}</td>
-              <td>
-                <a href="{{ url_for('edit_users', user_id=user.id) }}" class="btn btn-primary">ویرایش</a>
-                <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-primary delete-btn">حذف</a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+    <!-- Flash و Header -->
+    {% include "flash.html" %}
+    {% include "header.html" %}
+
+    <!-- Layout اصلی -->
+    <div class="admin-layout">
+        <!-- Sidebar ثابت -->
+        <aside class="admin-sidebar">
+            <h2 class="sidebar-title">پنل ادمین</h2>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('admin_manage_users') }}" 
+                   class="sidebar-link {{ 'active' if request.endpoint == 'admin_manage_users' else '' }}">
+                    👤 مدیریت کاربران
+                </a>
+                <a href="{{ url_for('admin_show_message') }}" 
+                   class="sidebar-link {{ 'active' if request.endpoint == 'admin_show_message' else '' }}">
+                    💬 نمایش پیام‌ها
+                </a>
+            </nav>
+        </aside>
+
+        <!-- محتوای متغیر (هر صفحه خودش پر می‌کنه) -->
+        <main class="admin-content">
+            {% block content %}{% endblock %}
+        </main>
     </div>
-  </div>
-  <!-- Footer -->
-  {% include "footer.html" %}
+
+    <!-- Footer -->
+    {% include "footer.html" %}
 </body>
 </html>

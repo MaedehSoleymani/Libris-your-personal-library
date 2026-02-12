@@ -78,7 +78,13 @@ h2 {
   -moz-appearance: none;
   appearance: none;
   background: transparent;
-  color: #fff;
+  color: #000000;
+  padding-right: 20px; /* فضای فلش */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: left 8px center; /* چون RTL هست */
+  background-size: 16px;
+  text-align: right;
 }
 
 .input-field label {
@@ -94,7 +100,31 @@ h2 {
 }
 
 .input-field input:focus ~ label,
-.input-field input:valid ~ label {
+.input-field input:valid ~ label,
+.input-field select:focus ~ label,
+.input-field select:not([value=""]) ~ label {
+  font-size: 0.8rem;
+  top: 10px;
+  transform: translateY(-120%);
+}
+
+/* در add_book.css */
+.input-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  font-size: 16px;
+  color: #fff;
+  text-align: right;
+  padding: 5px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.input-field textarea:focus ~ label,
+.input-field textarea:not(:placeholder-shown) ~ label {
   font-size: 0.8rem;
   top: 10px;
   transform: translateY(-120%);

@@ -30,7 +30,10 @@
                placeholder="کتاب مورد نظر خود را جست‌وجو کنید..." 
                value="{{ request.args.get('q', '') }}"
                autocomplete="off">
-        <button type="submit">جستجو</button>
+        <button type="submit" class="btn search-btn-primary">جستجو</button>
+        {% if request.args.get('q') %}
+          <a href="{{ url_for('dashboard') }}" class="btn search-btn-clear">پاک کردن</a>
+        {% endif %}
       </form>
     </div>
 
@@ -43,6 +46,8 @@
           <th>صفحات</th>
           <th>ژانر</th>
           <th>وضعیت</th>
+          <th>امتیاز</th>
+          <th>نظر</th>
           <th>عملیات</th>
         </tr>
       </thead>
@@ -54,6 +59,8 @@
           <td>{{ book.pages }}</td>
           <td>{{ book.genre }}</td>
           <td>{{ book.status }}</td>
+          <td>{{ book.rating }}</td>
+          <td>{{ book.comment }}</td>
           <td>
             <a href="{{ url_for('edit_book', book_id=book.id) }}" class="action-btn edit">ویرایش</a>
             <a href="{{ url_for('delete_book', book_id=book.id) }}" class="action-btn delete">حذف</a>

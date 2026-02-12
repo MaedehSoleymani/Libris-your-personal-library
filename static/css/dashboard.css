@@ -37,8 +37,8 @@ body::before {
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-  width: 90%;
-  max-width: 900px;
+  width: 95%; /* ✅ بزرگتر */
+  max-width: 1000px; /* ✅ بزرگتر */
   margin: 40px auto;
 }
 
@@ -46,21 +46,36 @@ body::before {
   margin-bottom: 30px;
   font-size: 2rem;
 }
-
 .books-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  table-layout: fixed;
 }
 
-.books-table th, .books-table td {
-  border: 1px solid rgba(255,255,255,0.3);
-  padding: 10px;
+.books-table th,
+.books-table td {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 12px 8px; /* ✅ فضای بیشتر */
   text-align: center;
+  white-space: normal; /* ✅ نه nowrap */
+  word-break: break-word; /* ✅ شکستن کلمات بلند */
+  overflow-wrap: break-word; /* ✅ برای فارسی/انگلیسی */
+
 }
 
 .books-table th {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
+  font-weight: 600;
+}
+
+.books-table td {
+  overflow: hidden;
+}
+
+.books-table td:nth-child(7),
+.books-table th:nth-child(7) {
+  max-width: 250px;
 }
 
 .action-btn {
@@ -104,21 +119,17 @@ body::before {
   gap: 16px;
 }
 
-.dashboard-header h1 {
-  font-size: 2rem;
-  margin: 0;
-  color: #fff;
-}
-
 .search-form {
   display: flex;
-  gap: 8px;
-  flex: 1;
-  max-width: 400px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%; /* ✅ پر کردن عرض */
 }
 
 .search-form input {
   flex: 1;
+  min-width: 250px; /* ✅ حداقل عرض */
   padding: 12px 16px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 6px;
@@ -128,33 +139,79 @@ body::before {
   outline: none;
 }
 
+.dashboard-header h1 {
+  font-size: 2rem;
+  margin: 0;
+  color: #fff;
+}
+
+
+
 .search-form input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.search-form button {
-  padding: 12px 20px;
-  background: #fff;
-  color: #000;
-  border: none;
+/* پایه مشترک دکمه‌ها */
+.search-btn-primary,
+.search-btn-clear {
+  height: 38px;
+  padding: 0 16px;
+  font-size: 13px;
   border-radius: 6px;
-  font-weight: 600;
+  display: inline-flex;          /* مهم */
+  align-items: center;           /* وسط عمودی */
+  justify-content: center;       /* وسط افقی */
+  text-decoration: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
-.search-form button:hover {
-  background: rgba(255, 255, 255, 0.9);
+/* دکمه جستجو */
+.search-btn-primary {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+}
+
+.search-btn-primary:hover {
+  background: rgba(255,255,255,0.85);
+}
+
+/* دکمه پاک کردن */
+.search-btn-clear {
+  background: transparent;
+  color: #f44336;
+  border: 1px solid #f44336;
+}
+
+.search-btn-clear:hover {
+  background: rgba(244,67,54,0.15);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+  .dashboard-wrapper {
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+
+  .books-table {
+    min-width: 700px; /* برای اسکرول افقی */
+  }
+
   .dashboard-header {
     flex-direction: column;
     text-align: center;
   }
+
   .search-form {
     width: 100%;
-    max-width: none;
+    flex-wrap: wrap;
+  }
+
+  .search-form input {
+    min-width: 200px;
   }
 }

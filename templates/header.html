@@ -2,7 +2,9 @@
 <header>
     <div class="container">
         <div class="logo">
-            <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Libris">
+            <a href="{{url_for('home')}}">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Libris">
+            </a>
         </div>
         <nav class="nav-links">
             <a href="{{ url_for('home') }}">خانه</a>
@@ -13,12 +15,22 @@
         </nav>
         <div class="auth-buttons">
             {% if session.email %}
-                {% if request.endpoint=='profile' %}
-                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline">داشبورد</a>
-                    <a href="{{ url_for('logout') }}" class="btn btn-outline">خروج</a>
+                {% if user and user.admin==True %}
+                    {% if request.endpoint=='admin' %}
+                        <a href="{{ url_for('profile') }}" class="btn btn-outline">حساب کاربری</a>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline">خروج</a>
+                    {% else %}
+                        <a href="{{ url_for('admin') }}" class="btn btn-outline">پنل ادمین</a>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline">خروج</a>
+                    {% endif %}
                 {% else %}
-                    <a href="{{ url_for('profile') }}" class="btn btn-outline">حساب کاربری</a>
-                    <a href="{{ url_for('logout') }}" class="btn btn-outline">خروج</a>
+                    {% if request.endpoint=='profile' %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline">داشبورد</a>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline">خروج</a>
+                    {% else %}
+                        <a href="{{ url_for('profile') }}" class="btn btn-outline">حساب کاربری</a>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline">خروج</a>
+                    {% endif %}
                 {% endif %}
             {% else %}
                 <a href="{{ url_for('login') }}" class="btn btn-outline">ورود</a>
