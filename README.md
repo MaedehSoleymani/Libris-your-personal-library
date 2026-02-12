@@ -63,7 +63,7 @@
 ## ⚙️ راه‌اندازی و نصب
 
 ```bash
-git clone https://github.com/yourusername/libris.git
+git clone https://github.com/MaedehSoleymani/Libris-your-personal-library.git
 cd libris
 python -m venv venv
 source venv/bin/activate        # در لینوکس/مک
@@ -169,7 +169,7 @@ This project was developed as a backend-focused practice application with attent
 ## ⚙️ Setup & Installation
 
 ```bash
-git clone https://github.com/yourusername/libris.git
+git clone https://github.com/MaedehSoleymani/Libris-your-personal-library.git
 cd libris
 python -m venv venv
 Linux: source venv/bin/activate 
