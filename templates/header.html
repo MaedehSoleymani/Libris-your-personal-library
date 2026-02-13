@@ -14,9 +14,9 @@
             <a href="/faq">سوالات متداول</a>
         </nav>
         <div class="auth-buttons">
-            {% if session.email %}
+            {% if session.user_id %}
                 {% if user and user.admin==True %}
-                    {% if request.endpoint=='admin' %}
+                    {% if request.endpoint and request.endpoint.startswith ('admin_') %}
                         <a href="{{ url_for('profile') }}" class="btn btn-outline">حساب کاربری</a>
                         <a href="{{ url_for('logout') }}" class="btn btn-outline">خروج</a>
                     {% else %}

@@ -52,8 +52,13 @@
                     <div class="action-card">
                         <h3>🗑️ حذف حساب</h3>
                         <p>اگر مایل به حذف دائمی حساب کاربری خود هستید، می‌توانید آن را انجام دهید.</p>
-                        <a href="{{ url_for('delete_account') }}" class="btn btn-outline delete-btn" 
-                           onclick="return confirm('آیا مطمئن هستید؟ این عمل غیرقابل بازگشت است!')">حذف حساب</a>
+                        <form method="POST" action="{{ url_for('delete_account') }}" style="display: inline;">
+                            <button type="submit" 
+                                    class="btn btn-outline delete-btn"
+                                    onclick="return confirm('آیا مطمئن هستید؟ این عمل غیرقابل بازگشت است!')">
+                                حذف حساب
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

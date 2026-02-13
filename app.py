@@ -38,7 +38,7 @@ except ImportError:
 def login_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if "email" not in session:
+        if "user_id" not in session:
             flash("ابتدا وارد حساب کاربری خود شوید.","error")
             return redirect(url_for("login"))
         return f(*args, **kwargs)
@@ -47,10 +47,10 @@ def login_required(f):
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'email' not in session:
+        if 'user_id' not in session:
             flash("برای دسترسی به این بخش باید وارد حساب کاربری خود شوید.", "error")
             return redirect(url_for('login'))
-        user = User.query.filter_by(email=session['email']).first()
+        user = User.query.filter_by(id=session['user_id']).first()
         if user and user.admin:
             return f(*args, **kwargs)
         else:
@@ -63,8 +63,8 @@ def admin_only(f):
 
 @app.context_processor
 def inject_user():
-    if 'email' in session:
-        user = User.query.filter_by(email=session['email']).first()
+    if 'user_id' in session:
+        user = User.query.filter_by(id=session['user_id']).first()
         return dict(user=user)
     return dict(user=None)
 
@@ -99,7 +99,7 @@ def delete_message(message_id):
 @app.route('/edit_user/int:<user_id>')
 @admin_only
 def edit_user(user_id):
-    user= User.query.get_or_404(user_id).first()
+    user= User.query.get_or_404(user_id)
     user.email=request.form.get('new_email')
     db.session.commit()
     return redirect(url_for('admin'))
@@ -122,7 +122,7 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     try:
-        if 'email' in session:
+        if 'user_id' in session:
             flash("شما داخل حساب کاربری خود هستید.","error")
             return redirect(url_for("profile"))
         else:
@@ -133,6 +133,7 @@ def login():
                 if user and user.verify_password(password):
                     session['email']= user.email
                     session['admin']= user.admin
+                    session['user_id']= user.id
                     flash ("با موفقیت وارد شدید.","success")
                     return redirect(url_for("dashboard"))
                 elif user and not user.verify_password(password):
@@ -154,7 +155,7 @@ def logout():
 
 @app.route ("/register", methods=["POST","GET"])
 def register():
-    if 'email' in session:
+    if 'user_id' in session:
         flash("شما داخل حساب کاربری خود هستید.","error")
         return redirect(url_for('profile'))
     else:
@@ -237,7 +238,7 @@ def change_password():
 def contact_us():
     try:
         if request.method=='POST':
-            if 'email' not in session:
+            if 'user_id' not in session:
                 flash ("برای ثبت پیام باید ابتدا وارد حساب کاربری خود شوید.","error")
                 return redirect (url_for('login'))
             else:
@@ -276,18 +277,26 @@ def profile():
     user= User.query.filter_by (email=session['email']).first()
     return render_template('profile.html',user=user)
 
-@app.route ('/delete_account')
+@app.route ('/delete_account', methods=['POST'])
 @login_required
 def delete_account():
-    pass
-
+    user= User.query.get(session['user_id'])
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        session.clear()
+        flash ("حساب کاربری با موفقیت حذف شد.","success")
+    else:
+        flash("خطا: کاربر یافت نشد.", "error")
+    return redirect(url_for('register'))
+        
 #-------------------------------------------
 #dashboard routes
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    books=Book.query.all()
+    books=Book.query.filter_by(user_id=session["user_id"]).all()
     return render_template('dashboard.html', books=books)
 
 @app.route ("/add_book", methods=["GET", "POST"])
@@ -315,7 +324,8 @@ def add_book():
                 flash("امتیاز وارد شده معتبر نیست!", "error")
                 return redirect(url_for('add_book'))
         comment= request.form.get("comment")
-        book = Book (title=title,author=author,pages=pages,genre=genre,status=status,rating=rating,comment=comment)
+        user_id= session['user_id']
+        book = Book (title=title,author=author,pages=pages,genre=genre,status=status,rating=rating,comment=comment,user_id=user_id)
         db.session.add(book)
         db.session.commit()
         flash("کتاب با موفقیت اضافه شد.", "success")

@@ -51,3 +51,5 @@ class Book (db.Model):
         nullable=False, default="خوانده نشده")
     rating = db.Column (db.Float, nullable=True)
     comment = db.Column (db.String (5000), nullable=True)
+
+    user_id= db.Column (db.Integer, db.ForeignKey('users.id'), nullable=False)
