@@ -7,8 +7,10 @@ from flask_mail import Mail, Message
 import config
 from emails.reset_password_email import reset_password_email
 from datetime import datetime, timezone
+from gitignore import secret_key
+
 app = Flask(__name__)
-app.secret_key = 'awesrdgtfhAWSEDTRYUIxCVGBHJ5247896532'
+app.secret_key = secret_key.secret_key
 app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///sqlite.db"
 
 app.config.from_object(config.Config)
