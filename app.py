@@ -6,7 +6,7 @@ from models import db,Book,User,ContactMessage
 from flask_mail import Mail, Message
 from emails.reset_password_email import reset_password_email
 from datetime import datetime, timezone
-from gitignore import secret_key, config
+# from gitignore import secret_key, config
 import os
 
 app = Flask(__name__)
