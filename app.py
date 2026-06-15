@@ -4,16 +4,26 @@ from functools import wraps
 from flask_sqlalchemy import SQLAlchemy 
 from models import db,Book,User,ContactMessage
 from flask_mail import Mail, Message
-import config
 from emails.reset_password_email import reset_password_email
 from datetime import datetime, timezone
-from gitignore import secret_key
+from gitignore import secret_key, config
+import os
 
 app = Flask(__name__)
-app.secret_key = secret_key.secret_key
+
+# app.secret_key = secret_key.secret_key
 app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///sqlite.db"
 
 app.config.from_object(config.Config)
+
+app.config["MAIL_SERVER"] = 'smtp.gmail.com'
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_DEFAULT_SENDER")
+
 mail=Mail(app)
 
 db.init_app(app)
@@ -368,5 +378,5 @@ def search_book():
         books=[]
     return render_template('dashboard.html', books=books, search_query=query)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
