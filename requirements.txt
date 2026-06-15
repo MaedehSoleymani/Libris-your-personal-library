@@ -8,3 +8,4 @@ blinker==1.8.2
 SQLAlchemy==2.0.30
 python-dotenv==1.0.1
 gunicorn==26.0.0
+requests==2.32.3
