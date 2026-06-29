@@ -9,10 +9,30 @@ from datetime import datetime, timezone
 # from gitignore import secret_key, config
 import os
 
+if os.environ.get("RENDER"):
+    def send_email_fallback(subject, recipients, html_body):
+        print(f"EMAIL (simulated): {subject} → {recipients}")
+        return {"status": "simulated"}
+    send_email_task = type('obj', (), {'delay': send_email_fallback})
+else:
+    from tasks import send_email_task
+
+    
 app = Flask(__name__)
 
 # app.secret_key = secret_key.secret_key
+app.secret_key = os.environ.get("SECRET_KEY")
+
+#DB CAN BE EITHER SQLITE OR POSTGRESS
 app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///sqlite.db"
+
+# if os.environ.get("RENDER"):
+#     db_url = os.environ.get("DATABASE_URL")
+#     if db_url.startswith("postgres://"):
+#         db_url = db_url.replace("postgres://", "postgresql://", 1)
+#     app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+# else:
+#     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlite.db"
 
 app.config["MAIL_SERVER"] = 'smtp.gmail.com'
 app.config["MAIL_PORT"] = 587
@@ -32,15 +52,17 @@ with app.app_context():
 #-----------------------------------------------------
 #create admin
 
-try:
-    from gitignore.create_admin import create_admin, add_reset_routes
-    add_reset_routes(app, db)
-    @app.route('/create_admin')
-    def create_admin_users():
-        return create_admin()
+# ONLY DOR PRODUCTION, NOT DEPLOY
+
+# try:
+#     from gitignore.create_admin import create_admin, add_reset_routes
+#     add_reset_routes(app, db)
+#     @app.route('/create_admin')
+#     def create_admin_users():
+#         return create_admin()
         
-except ImportError:
-    pass
+# except ImportError:
+#     pass
 
 #-----------------------------------------------------
 #login required functions
@@ -106,7 +128,7 @@ def delete_message(message_id):
     flash ("پیام با موفقیت حذف شد.","success")
     return redirect (url_for('admin_show_message'))
 
-@app.route('/edit_user/int:<user_id>')
+@app.route('/edit_user/<int:user_id>')
 @admin_only
 def edit_user(user_id):
     user= User.query.get_or_404(user_id)
@@ -230,13 +252,12 @@ def change_password():
         if user:
             token= user.generate_reset_token()
             db.session.commit()
-            reset_link= url_for ('reset_password', token=token, )
             reset_link = url_for('reset_password', token=token, _external=True)
-            msg= Message (
-                subject= "لیبریس - تغییر رمز عبور",
+            send_email_task.delay(
+                subject="لیبریس - تغییر رمز عبور",
                 recipients=[email],
-                html=reset_password_email(reset_link))
-            mail.send(msg)
+                html_body=reset_password_email(reset_link)
+            )
             flash ("ایمیل بازیابی رمز عبور با موفقیت ارسال شد. لطفا ایمیل خود را بررسی کرده و بر روی لینک کلیک کنید.","success")
             return redirect (url_for('change_password'))
         else:
@@ -361,6 +382,9 @@ def edit_book(book_id):
         book.pages= request.form.get("pages")
         book.genre= request.form.get("genre")
         book.status= request.form.get("status")
+        rating= request.form.get("rating")
+        book.rating = float(rating) if rating else None
+        book.comment= request.form.get("comment") or None
         db.session.commit()
         flash("کتاب با موفقیت ویرایش شد.", "success")
         return redirect(url_for("dashboard"))
